@@ -21,7 +21,7 @@
                    Text="Wave: 0"
                    FontSize="24"
                    FontWeight="Bold"
-                   Foreground="White"
+                   Foreground="LightBlue"
                    Margin="20, 0, 0, 50"
                    VerticalAlignment="Bottom"
                    HorizontalAlignment="Left"

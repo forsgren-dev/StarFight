@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36327.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarFight", "StarFight.csproj", "{B430D8F9-C701-4DA4-8599-2CABA427CA1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarTest", "..\StarTest\StarTest.csproj", "{BDCF0A14-666E-4DC7-85C8-5057B3224E2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B430D8F9-C701-4DA4-8599-2CABA427CA1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B430D8F9-C701-4DA4-8599-2CABA427CA1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B430D8F9-C701-4DA4-8599-2CABA427CA1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDCF0A14-666E-4DC7-85C8-5057B3224E2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDCF0A14-666E-4DC7-85C8-5057B3224E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDCF0A14-666E-4DC7-85C8-5057B3224E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDCF0A14-666E-4DC7-85C8-5057B3224E2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

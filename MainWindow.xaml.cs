@@ -338,7 +338,7 @@ namespace StarFight
             // Player explosion sound
             try
             {
-                playerExplodePlayer.Volume = 0.5; // Explosion volume
+                playerExplodePlayer.Volume = 0.6; // Explosion volume
                 playerExplodePlayer.Stop();
                 playerExplodePlayer.Position = TimeSpan.Zero;
                 playerExplodePlayer.Play();
@@ -371,7 +371,7 @@ namespace StarFight
                 GameOver();
             }
         }
-        private void PlayExplosionSound(double volume)
+        private void PlayExplosionSound()
         {
             if (explodePlayers.Count == 0) return;
             var p = explodePlayers[explodeIndex];
@@ -381,7 +381,7 @@ namespace StarFight
             {
                 p.Stop();
                 p.Position = TimeSpan.Zero;
-                p.Volume = volume;
+                p.Volume = 0.7;
                 p.Play();
             }
             catch
@@ -727,7 +727,7 @@ namespace StarFight
                     if (bulletRect.IntersectsWith(alienRect))
                     {
                         CreateExplosion(alienX + alien.Width / 2, alienY + alien.Height / 2);
-                        PlayExplosionSound(0.7);
+                        PlayExplosionSound();
                         // Hide alien
                         alien.Opacity = 0;
                         score += 100; // Poäng per träff
@@ -843,7 +843,7 @@ namespace StarFight
                 backgroundMusicPlayer.Position = TimeSpan.Zero;  // Rewind
                 backgroundMusicPlayer.Play();                    // Restart music
             };
-            backgroundMusicPlayer.Volume = 1; // Music volume
+            backgroundMusicPlayer.Volume = 0.6; // Music volume
             backgroundMusicPlayer.Play();
         }
         class Particle

@@ -7,14 +7,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 // By Erik Forsgren 2025
-namespace SpaceFight
+namespace StarFight
 {
     public partial class MainWindow : Window
     {
         private MediaPlayer backgroundMusicPlayer;
         private DispatcherTimer gameTimer = new DispatcherTimer();
         private DispatcherTimer fireTimer = new DispatcherTimer();
-        private List<MediaPlayer> activePlayers = new List<MediaPlayer>();
         private const double scrollSpeed = 6;
         private double mouseX = 0;
         private const double playerPaddingBottom = 50;

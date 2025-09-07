@@ -57,20 +57,49 @@ namespace StarFight
         private readonly List<MediaPlayer> shotPlayers = new();
         private int shotIndex = 0;
         private Uri shotUri;
+        private Uri explodeUri;
+        private readonly List<MediaPlayer> explodePlayers = new List<MediaPlayer>();
+        private int explodeIndex = 0;
+        private MediaPlayer playerExplodePlayer;
         public MainWindow()
         {
+            StartBackgroundMusic();
             InitializeComponent();
             shotUri = new Uri(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                 "shot.wav"), UriKind.Absolute);
             for (int i = 0; i < 8; i++)
             {
-                var p = new MediaPlayer { Volume = 0.3 };
+                // Volume is set when calling PlayShotSound! Should be 0 here.
+                var p = new MediaPlayer { Volume = 0.0 }; 
                 p.Open(shotUri);
+                p.Stop();
                 p.MediaEnded += (s, e) => { p.Stop(); p.Position = TimeSpan.Zero; };
                 p.MediaFailed += (s, e) => { p.Close(); }; // Error cleanup
                 shotPlayers.Add(p);
             }
-            StartBackgroundMusic();
+            explodeUri = new Uri(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+    "xplode.mp3"), UriKind.Absolute);
+
+            for (int i = 0; i < 4; i++)
+            {
+                // Volume is set when calling PlayExplosionSound! Should be 0 here.
+                var p = new MediaPlayer { Volume = 0.0 }; 
+                p.Open(explodeUri);
+                p.Stop();
+                p.MediaEnded += (s, e) => { p.Stop(); p.Position = TimeSpan.Zero; };
+                p.MediaFailed += (s, e) => { p.Close(); };
+                explodePlayers.Add(p);
+            }
+            // Preloading the player explosion sound
+            playerExplodePlayer = new MediaPlayer();
+            var uri = new Uri(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                "player_explosion.mp3"), UriKind.Absolute);
+            playerExplodePlayer.Open(uri);
+            playerExplodePlayer.Volume = 0.0; // Explosion volume is set in PlayerExplode!
+            playerExplodePlayer.Stop();       // Vol 0 here prevents glitches at game start
+            playerExplodePlayer.Position = TimeSpan.Zero;
+            
+            // Show backgrounds
             Canvas.SetTop(Background1, 0);
             Canvas.SetTop(Background2, -Background2.Height);
             Canvas.SetLeft(Background1, 0);
@@ -306,6 +335,16 @@ namespace StarFight
 
             // Explosion
             CreateExplosion(playerX, playerY);
+            // Player explosion sound
+            try
+            {
+                playerExplodePlayer.Volume = 0.5; // Explosion volume
+                playerExplodePlayer.Stop();
+                playerExplodePlayer.Position = TimeSpan.Zero;
+                playerExplodePlayer.Play();
+            }
+            catch { } // Ignore sound errors
+
 
             // Hide ship
             Player.Visibility = Visibility.Collapsed;
@@ -330,6 +369,26 @@ namespace StarFight
                 // Delay at Game Over
                 await Task.Delay(500);
                 GameOver();
+            }
+        }
+        private void PlayExplosionSound(double volume)
+        {
+            if (explodePlayers.Count == 0) return;
+            var p = explodePlayers[explodeIndex];
+            explodeIndex = (explodeIndex + 1) % explodePlayers.Count;
+
+            try
+            {
+                p.Stop();
+                p.Position = TimeSpan.Zero;
+                p.Volume = volume;
+                p.Play();
+            }
+            catch
+            {
+                p.Close();
+                p.Open(explodeUri);
+                p.Play();
             }
         }
         private void CreateExplosion(double x, double y)
@@ -599,7 +658,7 @@ namespace StarFight
                 fireTimer.Stop();
             }
         }
-        private void PlayShotSound()
+        private void PlayShotSound(double volume)
         {
             if (shotPlayers.Count == 0) return;
             var p = shotPlayers[shotIndex];
@@ -610,6 +669,7 @@ namespace StarFight
             {
                 p.Stop();
                 p.Position = TimeSpan.Zero;
+                p.Volume = volume;
                 p.Play();
             }
             catch
@@ -621,7 +681,7 @@ namespace StarFight
         }
         private void ShootBullet()
         {
-            PlayShotSound();
+            PlayShotSound(0.2);
             Rectangle bullet = new Rectangle
             {
                 Width = bulletWidth,
@@ -667,7 +727,7 @@ namespace StarFight
                     if (bulletRect.IntersectsWith(alienRect))
                     {
                         CreateExplosion(alienX + alien.Width / 2, alienY + alien.Height / 2);
-
+                        PlayExplosionSound(0.7);
                         // Hide alien
                         alien.Opacity = 0;
                         score += 100; // Poäng per träff
@@ -776,7 +836,7 @@ namespace StarFight
         public void StartBackgroundMusic()
         {
             backgroundMusicPlayer = new MediaPlayer();
-            var musicPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "music.wav");
+            var musicPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "music.mp3");
             backgroundMusicPlayer.Open(new Uri(musicPath));
             backgroundMusicPlayer.MediaEnded += (s, e) =>
             {

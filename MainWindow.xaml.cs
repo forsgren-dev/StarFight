@@ -715,7 +715,7 @@ namespace StarFight
                 {
                     var alien = aliens[j];
 
-                    // Hoppa över döda aliens (osynliga)
+                    // Skip dead aliens
                     if (alien.Opacity == 0)
                         continue;
 
@@ -730,7 +730,7 @@ namespace StarFight
                         PlayExplosionSound();
                         // Hide alien
                         alien.Opacity = 0;
-                        score += 100; // Poäng per träff
+                        score += 100; // Points per alien
                         ScoreText.Text = $"Score: {score:N0}";
 
                         // Remove bullet
@@ -825,7 +825,7 @@ namespace StarFight
                 HighScoreText.Text = $"Highscore: {highScore:N0}";
                 HighScoreText.Visibility = Visibility.Visible;
 
-                // Starta alien shot timer
+                // Start alien shot timer
                 alienFireTimer.Start();
 
                 // Start new wave

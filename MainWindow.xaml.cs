@@ -41,6 +41,7 @@ namespace StarFight
         private int score = 0;
         private int wave = 0;
         private bool isWaveTypeW = false;
+        private bool isWaveTypeX = false;
         private Random rand = new Random();
         private int playerHealth = 3;   // Ship shield
         private int playerLives = 3;    // Number of ships
@@ -434,6 +435,8 @@ namespace StarFight
             waveSpeedIncrease += baseAcceleration + accelerationPerWave * (wave - 1);
             // WaveType W
             isWaveTypeW = (wave % 5 == 0);
+            // WaveType X
+            isWaveTypeX = (wave % 2 == 0);
             // Faster interval per wave
             alienFireTimer.Interval = TimeSpan.FromSeconds(Math.Max(0.5, 1.5 - wave * 0.02));
             // Spawn aliens (remove old)
@@ -448,7 +451,9 @@ namespace StarFight
                     Height = 70,
                     Stretch = Stretch.Fill,
                     Source = new BitmapImage(new Uri(isWaveTypeW ?
-                        "pack://application:,,,/images/alien2.png" :
+                        "pack://application:,,,/images/alien2.png" : 
+                        isWaveTypeX ?
+                        "pack://application:,,,/images/alien3.png" :
                         "pack://application:,,,/images/alien1.png"))
                 };
                 double x = rand.Next(0, (int)(GameCanvas.ActualWidth - alien.Width));

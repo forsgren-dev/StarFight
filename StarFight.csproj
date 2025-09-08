@@ -16,6 +16,7 @@
     <None Remove="images\alien1.png" />
     <None Remove="images\alien2.png" />
     <None Remove="images\alien2b.png" />
+    <None Remove="images\alien3.png" />
     <None Remove="images\nebulosa.png" />
     <None Remove="images\nebulosa2.png" />
     <None Remove="images\player.png" />
@@ -55,6 +56,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="images\space_bg3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\alien3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Content Include="music.mp3">

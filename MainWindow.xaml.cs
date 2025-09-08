@@ -98,7 +98,6 @@ namespace StarFight
             playerExplodePlayer.Volume = 0.0; // Explosion volume is set in PlayerExplode!
             playerExplodePlayer.Stop();       // Vol 0 here prevents glitches at game start
             playerExplodePlayer.Position = TimeSpan.Zero;
-            
             // Show backgrounds
             Canvas.SetTop(Background1, 0);
             Canvas.SetTop(Background2, -Background2.Height);
@@ -188,12 +187,10 @@ namespace StarFight
         {
             var aliveAliens = aliens.Where(a => a.Opacity > 0).ToList();
             if (aliveAliens.Count == 0) return;
-
+            // Random alien to shoot
             var shooter = aliveAliens[rand.Next(aliveAliens.Count)];
-
             double alienX = Canvas.GetLeft(shooter) + shooter.Width / 2;
             double alienY = Canvas.GetTop(shooter) + shooter.Height;
-
             ShootAlienBullet(alienX, alienY);
         }
         private void ShootAlienBullet(double x, double y)
@@ -329,10 +326,8 @@ namespace StarFight
         private async void PlayerExplode()
         {
             isPlayerAlive = false;
-
             double playerX = Canvas.GetLeft(Player) + Player.ActualWidth / 2;
             double playerY = Canvas.GetTop(Player) + Player.ActualHeight / 2;
-
             // Explosion
             CreateExplosion(playerX, playerY);
             // Player explosion sound
@@ -344,14 +339,12 @@ namespace StarFight
                 playerExplodePlayer.Play();
             }
             catch { } // Ignore sound errors
-
-
             // Hide ship
             Player.Visibility = Visibility.Collapsed;
-
+            // Remove life
             playerLives--;
             LivesText.Text = $"Lives: {playerLives}";
-
+            // Check for Game Over
             if (playerLives > 0)
             {
                 // Delayed respawn
@@ -376,7 +369,6 @@ namespace StarFight
             if (explodePlayers.Count == 0) return;
             var p = explodePlayers[explodeIndex];
             explodeIndex = (explodeIndex + 1) % explodePlayers.Count;
-
             try
             {
                 p.Stop();
@@ -409,7 +401,6 @@ namespace StarFight
                     (byte)(rand.Next(100)),
                     (byte)(rand.Next(20))
                 );
-
                 Ellipse shape = new Ellipse
                 {
                     Width = 3, // Mindre
@@ -417,10 +408,8 @@ namespace StarFight
                     Fill = new SolidColorBrush(color),
                     Opacity = 1
                 };
-
                 Canvas.SetLeft(shape, x);
                 Canvas.SetTop(shape, y);
-
                 // Particle lifetime
                 Particle particle = new Particle(x, y, velocity, lifeTime: 0.4);
                 particles.Add(particle);
@@ -435,28 +424,22 @@ namespace StarFight
             if (isGameRunning)
                 wave++;
             WaveText.Text = $"Wave: {wave}";
-
             // Attack wave vertical speed (increasing per wave)
             double baseSpeed = 100;              // First wave base speed
             double waveSpeedPerWave = 0.3;       // Increase per wave
             waveSpeed = baseSpeed + waveSpeedPerWave * (wave - 1);
-
             // Acceleration during wave
             double baseAcceleration = 0.2;      // First wave acceleration
             double accelerationPerWave = 0.1;  // Per wave increase
             waveSpeedIncrease += baseAcceleration + accelerationPerWave * (wave - 1);
-
             // WaveType W
             isWaveTypeW = (wave % 5 == 0);
-
             // Faster interval per wave
             alienFireTimer.Interval = TimeSpan.FromSeconds(Math.Max(0.5, 1.5 - wave * 0.02));
-
-            // Spawn aliens
+            // Spawn aliens (remove old)
             foreach (var alien in aliens)
                 GameCanvas.Children.Remove(alien);
             aliens.Clear();
-
             for (int i = 0; i < count; i++)
             {
                 Image alien = new Image
@@ -515,11 +498,9 @@ namespace StarFight
                 foreach (var alien in aliens)
                 {
                     if (alien.Opacity == 0) continue;
-
                     double alienX = Canvas.GetLeft(alien);
                     double alienY = Canvas.GetTop(alien);
                     Rect alienRect = new Rect(alienX, alienY, alien.Width, alien.Height - 20);
-
                     if (!isInvulnerable && playerRect.IntersectsWith(alienRect))
                     {
                         PlayerExplode();
@@ -541,10 +522,8 @@ namespace StarFight
                 double waveOffset = i * 0.5;
                 double x = centerX + horizontalAmplitude * Math.Sin(totalTime * 1.5 + waveOffset) *
                            Math.Abs(Math.Sin(totalTime + waveOffset));
-
                 double yWave = verticalAmplitude * Math.Sin(totalTime * 4 + waveOffset);
                 double y = -300 + waveVerticalOffset + yWave; // Startposition
-
                 Canvas.SetLeft(aliens[i], x - aliens[i].Width / 2);
                 Canvas.SetTop(aliens[i], y);
             }
@@ -562,7 +541,6 @@ namespace StarFight
                     double alienY = Canvas.GetTop(alien);
                     Rect alienRect = new Rect(alienX, alienY,
                         alien.Width, alien.Height - 20);
-
                     if (!isInvulnerable && playerRect.IntersectsWith(alienRect))
                     {
                         PlayerExplode();
@@ -577,7 +555,6 @@ namespace StarFight
             double canvasHeight = GameCanvas.ActualHeight;
             double playerWidth = Player.ActualWidth;
             double playerHeight = Player.ActualHeight - 20;
-
             // Set width and height to default
             if (playerWidth == 0) playerWidth = 100;
             if (playerHeight == 0) playerHeight = 100;
@@ -594,10 +571,8 @@ namespace StarFight
         {
             double y = Canvas.GetTop(bg);
             y += currentscrollSpeed;
-
             if (y >= Height)
                 y = -bg.Height;
-
             Canvas.SetTop(bg, y);
         }
         private void ApplyParallax()
@@ -608,10 +583,10 @@ namespace StarFight
                 double offsetX = (centerX - mouseX) / centerX;
                 double backgroundWidth = Background1.ActualWidth;
                 double canvasWidth = GameCanvas.ActualWidth;
-
+                // Wait until canvas is set
                 if (backgroundWidth == 0 || canvasWidth == 0)
-                    return; // Wait until canvas is set
-
+                    return; 
+                // Set nebulosa background position
                 double maxHorizontalShift = backgroundWidth - canvasWidth;
                 double spillRoom = 0; // For testing
                 double minLeft = -maxHorizontalShift - spillRoom;
@@ -619,10 +594,10 @@ namespace StarFight
                 double parallaxRange = maxLeft - minLeft;
                 double normalized = (offsetX + 1) / 2;
                 double leftPos = minLeft + normalized * parallaxRange;
-
-                if (leftPos > maxLeft) leftPos = maxLeft;
-                if (leftPos < minLeft) leftPos = minLeft;
-
+                if (leftPos > maxLeft) 
+                    leftPos = maxLeft;
+                if (leftPos < minLeft) 
+                    leftPos = minLeft;
                 Canvas.SetLeft(Background1, leftPos);
                 Canvas.SetLeft(Background2, leftPos);
                 Canvas.SetLeft(Nebulosa, leftPos * 2); //Movement relative to background
@@ -650,8 +625,9 @@ namespace StarFight
         }
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (!isGameRunning) return; // Ignore if in start screen
-
+            if (!isGameRunning) 
+                return; // Ignore if in start screen
+            // Stop firing on button release
             if (e.ChangedButton == MouseButton.Left)
             {
                 isFiring = false;
@@ -663,7 +639,6 @@ namespace StarFight
             if (shotPlayers.Count == 0) return;
             var p = shotPlayers[shotIndex];
             shotIndex = (shotIndex + 1) % shotPlayers.Count;
-
             // Restart mediaplayer if any trouble
             try
             {
@@ -693,7 +668,6 @@ namespace StarFight
             double playerWidth = Player.ActualWidth;
             // Set bullet position in the middle of player
             double bulletX = playerX + playerWidth / 2 - bulletWidth / 2;
-
             Canvas.SetLeft(bullet, bulletX);
             Canvas.SetTop(bullet, playerY + 20); // 20 closer to ship
             // Fire shot
@@ -708,22 +682,17 @@ namespace StarFight
                 double bulletX = Canvas.GetLeft(bullet);
                 double bulletY = Canvas.GetTop(bullet);
                 Rect bulletRect = new Rect(bulletX, bulletY, bulletWidth, bulletHeight);
-
                 bool hit = false;
-
                 for (int j = 0; j < aliens.Count; j++)
                 {
                     var alien = aliens[j];
-
                     // Skip dead aliens
                     if (alien.Opacity == 0)
                         continue;
-
+                    // Check collision
                     double alienX = Canvas.GetLeft(alien);
                     double alienY = Canvas.GetTop(alien);
-
                     Rect alienRect = new Rect(alienX, alienY, alien.Width, alien.Height);
-
                     if (bulletRect.IntersectsWith(alienRect))
                     {
                         CreateExplosion(alienX + alien.Width / 2, alienY + alien.Height / 2);
@@ -732,7 +701,6 @@ namespace StarFight
                         alien.Opacity = 0;
                         score += 100; // Points per alien
                         ScoreText.Text = $"Score: {score:N0}";
-
                         // Remove bullet
                         GameCanvas.Children.Remove(bullet);
                         bullets.RemoveAt(i);
@@ -761,11 +729,9 @@ namespace StarFight
         {
             double t = leaderTime; // total tid
             double phase = leaderTime - i * 0.2; // Distance between aliens
-
             double x = GameCanvas.ActualWidth / 2 + currentHorizontalRadius * Math.Sin(phase);
             double yWave = currentVerticalRadius * Math.Sin(phase) * Math.Cos(phase); // 8 formation
             double y = -200 + waveVerticalOffset + yWave; // vertical movement plus 8 formation
-
             return new Point(x, y);
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -814,7 +780,6 @@ namespace StarFight
                 isGameRunning = true;
                 this.Cursor = Cursors.None;
                 currentscrollSpeed = scrollSpeed;
-
                 // Show UI
                 WaveText.Visibility = Visibility.Visible;
                 ScoreText.Visibility = Visibility.Visible;
@@ -824,10 +789,8 @@ namespace StarFight
                 ShieldText.Visibility = Visibility.Visible;
                 HighScoreText.Text = $"Highscore: {highScore:N0}";
                 HighScoreText.Visibility = Visibility.Visible;
-
                 // Start alien shot timer
                 alienFireTimer.Start();
-
                 // Start new wave
                 SpawnNewWave(enemies);
             };

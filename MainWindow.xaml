@@ -4,7 +4,9 @@
         Title="StarFight" Height="720" Width="1280" ResizeMode="NoResize" Background="Black"
         MouseMove="Window_MouseMove" 
         WindowStyle="None"
-        WindowState="Maximized"
+        MaxWidth="1200" 
+        MaxHeight="800" 
+        WindowStartupLocation="Manual" 
         Topmost="True" 
         KeyDown="Window_KeyDown"
         Focusable="True">
@@ -80,7 +82,7 @@
                         Click="StartGame_Click"/>
             </StackPanel>
             <TextBlock x:Name="InfoText"
-                Text="Game &amp; Music: Erik Forsgren (2025) Esc/F11: Fullscreen toggle"
+                Text="Game &amp; Music: Erik Forsgren (2025) Esc/F11: Window toggle"
 Foreground="LightBlue"
 FontSize="18"
 FontWeight="Bold"

@@ -55,17 +55,31 @@ namespace StarFight
         private double currentscrollSpeed;
         private bool isGameRunning = false;
         private int highScore = 0;
-        private readonly List<MediaPlayer> shotPlayers = new();
         private int shotIndex = 0;
+        // Sounds preloading
+        private readonly List<MediaPlayer> shotPlayers = new();
         private Uri shotUri;
         private Uri explodeUri;
-        private readonly List<MediaPlayer> explodePlayers = new List<MediaPlayer>();
+        private readonly List<MediaPlayer> explodePlayers = new();
         private int explodeIndex = 0;
         private MediaPlayer playerExplodePlayer;
         public MainWindow()
         {
-            StartBackgroundMusic();
             InitializeComponent();
+            StartBackgroundMusic();
+            //Window positioning 
+            this.MaxWidth = 1920;
+            this.MaxHeight = 1080;
+            this.WindowStartupLocation = WindowStartupLocation.Manual;
+            this.Loaded += (s, e) =>
+            {
+                var screenWidth = SystemParameters.PrimaryScreenWidth;
+                var screenHeight = SystemParameters.PrimaryScreenHeight;
+                this.Width = Math.Min(screenWidth, 1920);
+                this.Height = Math.Min(screenHeight, 1080);
+                this.Left = (screenWidth - this.Width) / 2;
+                this.Top = (screenHeight - this.Height) / 2;
+            };
             shotUri = new Uri(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                 "shot.wav"), UriKind.Absolute);
             for (int i = 0; i < 8; i++)

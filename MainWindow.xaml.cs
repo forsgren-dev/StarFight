@@ -85,7 +85,7 @@ namespace StarFight
             for (int i = 0; i < 8; i++)
             {
                 // Volume is set when calling PlayShotSound! Should be 0 here.
-                var p = new MediaPlayer { Volume = 0.0 }; 
+                var p = new MediaPlayer { Volume = 0.0 };
                 p.Open(shotUri);
                 p.Stop();
                 p.MediaEnded += (s, e) => { p.Stop(); p.Position = TimeSpan.Zero; };
@@ -98,7 +98,7 @@ namespace StarFight
             for (int i = 0; i < 4; i++)
             {
                 // Volume is set when calling PlayExplosionSound! Should be 0 here.
-                var p = new MediaPlayer { Volume = 0.0 }; 
+                var p = new MediaPlayer { Volume = 0.0 };
                 p.Open(explodeUri);
                 p.Stop();
                 p.MediaEnded += (s, e) => { p.Stop(); p.Position = TimeSpan.Zero; };
@@ -166,13 +166,12 @@ namespace StarFight
             UpdateParticles();
             ApplyParallax();
             // Update alien movement in Game Over
-            if (aliens.Count > 0)
-            {
-                if (isWaveTypeW)
-                    UpdateAliensMovementW();
-                else
-                    UpdateAliensMovement();
-            }
+
+            if (isWaveTypeW)
+                UpdateAliensMovementW();
+            else
+                UpdateAliensMovement();
+
             // If Game Over do nothing else
             if (!isGameRunning && isGameOverWaiting)
                 return;
@@ -466,7 +465,7 @@ namespace StarFight
                     Height = 70,
                     Stretch = Stretch.Fill,
                     Source = new BitmapImage(new Uri(isWaveTypeW ?
-                        "pack://application:,,,/images/alien2.png" : 
+                        "pack://application:,,,/images/alien2.png" :
                         isWaveTypeX ?
                         "pack://application:,,,/images/alien3.png" :
                         "pack://application:,,,/images/alien1.png"))
@@ -605,7 +604,7 @@ namespace StarFight
                 double canvasWidth = GameCanvas.ActualWidth;
                 // Wait until canvas is set
                 if (backgroundWidth == 0 || canvasWidth == 0)
-                    return; 
+                    return;
                 // Set nebulosa background position
                 double maxHorizontalShift = backgroundWidth - canvasWidth;
                 double spillRoom = 0; // For testing
@@ -614,9 +613,9 @@ namespace StarFight
                 double parallaxRange = maxLeft - minLeft;
                 double normalized = (offsetX + 1) / 2;
                 double leftPos = minLeft + normalized * parallaxRange;
-                if (leftPos > maxLeft) 
+                if (leftPos > maxLeft)
                     leftPos = maxLeft;
-                if (leftPos < minLeft) 
+                if (leftPos < minLeft)
                     leftPos = minLeft;
                 Canvas.SetLeft(Background1, leftPos);
                 Canvas.SetLeft(Background2, leftPos);
@@ -645,7 +644,7 @@ namespace StarFight
         }
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (!isGameRunning) 
+            if (!isGameRunning)
                 return; // Ignore if in start screen
             // Stop firing on button release
             if (e.ChangedButton == MouseButton.Left)
@@ -868,7 +867,7 @@ namespace StarFight
             public void Update(double deltaTime)
             {
                 LifeTime -= deltaTime;
-                if (LifeTime < 0) 
+                if (LifeTime < 0)
                     LifeTime = 0;
                 double x = Canvas.GetLeft(Shape);
                 double y = Canvas.GetTop(Shape);

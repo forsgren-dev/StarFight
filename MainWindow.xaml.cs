@@ -231,6 +231,7 @@ namespace StarFight
 
             /* Tested respawning the player centered on screen
                I think it looks better not to do this
+
                mouseX = GameCanvas.ActualWidth / 2;
                PositionPlayer(mouseX); */
 
@@ -766,6 +767,18 @@ namespace StarFight
                 this.WindowStyle = WindowStyle.None;
                 this.WindowState = WindowState.Maximized;
                 this.Topmost = true;
+                this.MaxWidth = 1920;
+                this.MaxHeight = 1080;
+                this.WindowStartupLocation = WindowStartupLocation.Manual;
+                this.Loaded += (s, e) =>
+                {
+                    var screenWidth = SystemParameters.PrimaryScreenWidth;
+                    var screenHeight = SystemParameters.PrimaryScreenHeight;
+                    this.Width = Math.Min(screenWidth, 1920);
+                    this.Height = Math.Min(screenHeight, 1080);
+                    this.Left = (screenWidth - this.Width) / 2;
+                    this.Top = (screenHeight - this.Height) / 2;
+                };
             }
         }
         private void StartGame_Click(object sender, RoutedEventArgs e) // Start button events

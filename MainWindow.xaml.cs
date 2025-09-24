@@ -764,8 +764,6 @@ namespace StarFight
             else if (e.Key == Key.F11)
             {
                 this.WindowStyle = WindowStyle.None;
-                this.WindowState = WindowState.Maximized;
-                this.Topmost = true;
                 this.MaxWidth = 1920;
                 this.MaxHeight = 1080;
                 this.WindowStartupLocation = WindowStartupLocation.Manual;
@@ -778,6 +776,7 @@ namespace StarFight
                     this.Left = (screenWidth - this.Width) / 2;
                     this.Top = (screenHeight - this.Height) / 2;
                 };
+                
             }
         }
         private void StartGame_Click(object sender, RoutedEventArgs e) // Start button events

@@ -705,7 +705,7 @@ namespace StarFight
                 for (int j = 0; j < aliens.Count; j++)
                 {
                     var alien = aliens[j];
-                    // Skip dead aliens
+                    // Skip "dead" aliens
                     if (alien.Opacity == 0)
                         continue;
                     // Check collision
@@ -727,7 +727,7 @@ namespace StarFight
                         break;
                     }
                 }
-                // Remove bullet at top of screen
+                // Remove bullet at top
                 if (!hit)
                 {
                     double y = bulletY - bulletSpeed;
@@ -746,7 +746,7 @@ namespace StarFight
         // Calculate alien position
         private Point GetAlienPosition(int i)
         {
-            double t = leaderTime; // total tid
+            double t = leaderTime; // Total time
             double phase = leaderTime - i * 0.2; // Distance between aliens
             double x = GameCanvas.ActualWidth / 2 + currentHorizontalRadius * Math.Sin(phase);
             double yWave = currentVerticalRadius * Math.Sin(phase) * Math.Cos(phase); // 8 formation

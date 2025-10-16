@@ -705,7 +705,7 @@ namespace StarFight
                 for (int j = 0; j < aliens.Count; j++)
                 {
                     var alien = aliens[j];
-                    // Skip "dead" aliens asdhahjsdgkajhsgd
+                    // Skip "dead" aliens 
                     if (alien.Opacity == 0)
                         continue;
                     // Check collision
